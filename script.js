@@ -1,6 +1,52 @@
 const randomColor = document.querySelector('.container');
 const bodyCol = document.querySelector('.body');
 
+let lat;
+let lng;
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      lat = position.coords.latitude;
+      lng = position.coords.longitude;
+      console.log('latitude: ' + lat + ', longitude: ' + lng);
+    });
+  } else {
+    console.log('Geolocation is not supported by this browser.');
+  }
+}
+getLocation();
+
+let city;
+let country;
+
+async function getReverseGeolocation() {
+  const response = await fetch(
+    `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}`,
+  );
+  const jsonData = await response.json();
+  city = jsonData.city;
+  country = jsonData.countryName;
+
+  console.log(jsonData);
+}
+
+function getRevGeo(delay) {
+  setTimeout(() => {
+    getReverseGeolocation();
+    console.log(lat, lng, city, country);
+  }, delay * 250);
+}
+getRevGeo(1);
+
+const yourLocation = document.getElementById('yloc');
+function setLocation(delay) {
+  setTimeout(() => {
+    yourLocation.innerHTML = `Your location is ${city}, ${country}`;
+  }, delay * 2000);
+}
+setLocation(1);
+
 function changeColor() {
   let x = Math.floor(Math.random() * 256);
   let y = Math.floor(Math.random() * 256);
