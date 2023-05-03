@@ -47,6 +47,7 @@ async function getOs() {
   const jsonData = await response.json();
   os = jsonData.os;
   browser = jsonData.family;
+  ip = jsonData.ipString;
 
   console.log(jsonData);
 }
@@ -55,10 +56,12 @@ getOs();
 
 const yourLocation = document.getElementById('yloc');
 const yourOs = document.getElementById('os');
+const yourIp = document.getElementById('ip');
 function setLocation(delay) {
   setTimeout(() => {
     yourLocation.innerHTML = `Your location is ${city}, ${country}`;
     yourOs.innerHTML = `You are using ${browser} on ${os}`;
+    yourIp.innerHTML = `Your IP adress is: ${ip}`;
   }, delay * 2000);
 }
 setLocation(1);
