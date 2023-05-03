@@ -35,14 +35,30 @@ function getRevGeo(delay) {
   setTimeout(() => {
     getReverseGeolocation();
     console.log(lat, lng, city, country);
-  }, delay * 250);
+  }, delay * 1000);
 }
 getRevGeo(1);
 
+let os;
+let browser;
+
+async function getOs() {
+  const response = await fetch(`https://api-bdc.net/data/client-info`);
+  const jsonData = await response.json();
+  os = jsonData.os;
+  browser = jsonData.family;
+
+  console.log(jsonData);
+}
+
+getOs();
+
 const yourLocation = document.getElementById('yloc');
+const yourOs = document.getElementById('os');
 function setLocation(delay) {
   setTimeout(() => {
     yourLocation.innerHTML = `Your location is ${city}, ${country}`;
+    yourOs.innerHTML = `You are using ${browser} on ${os}`;
   }, delay * 2000);
 }
 setLocation(1);
